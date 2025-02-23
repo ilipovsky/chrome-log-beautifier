@@ -1,4 +1,5 @@
-#include <unistd.h>
+//#include <unistd.h>
+#include <io.h>
 
 #include <cstdio>
 #include <fstream>
@@ -16,7 +17,7 @@ void LineProducer(int fd,
                   Sender<std::wstring> sender,
                   ScreenInteractive* screen) {
   std::string line;
-  int buffer_size = 1 << 10;
+  constexpr static int buffer_size = 1 << 10;
   char buffer[buffer_size];
   while (true) {
     int c = read(fd, buffer, buffer_size);
@@ -51,7 +52,7 @@ int main(int argument_count, char** arguments) {
     log_fd = dup(fileno(stdin));
   }
   // Reroute stdin to /dev/tty to handle user input.
-  stdin = freopen("/dev/tty", "r", stdin);
+  //stdin = freopen("/dev/tty", "r", stdin);
 
   auto line_receiver = MakeReceiver<std::wstring>();
   auto line_sender = line_receiver->MakeSender();
